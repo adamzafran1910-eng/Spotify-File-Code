@@ -17,12 +17,19 @@ int main() {
     while (running) {
 
         cout << endl;
-        cout << "1. Get a playlist recommendation" << endl;
+        cout << "1. Get a playlist recommendation (add songs to queue)" << endl;
         cout << "2. View queue / play next song" << endl;
         cout << "3. View Premium plan and subscribe" << endl;
         cout << "4. Exit" << endl;
         cout << "Choose (1-4): ";
-        cin >> choice;
+
+        while (!(cin >> choice) ||
+               choice < 1 || choice > 4) {
+
+            cout << "Invalid. Please enter 1 to 4: ";
+            cin.clear();
+            cin.ignore(1000, '\n');
+        }
 
         switch (choice) {
 
@@ -42,7 +49,14 @@ int main() {
             cout << "4. Sad" << endl;
             cout << "5. Study" << endl;
             cout << "Choose (1-5): ";
-            cin >> mood;
+
+            while (!(cin >> mood) ||
+                   mood < 1 || mood > 5) {
+
+                cout << "Invalid. Please enter 1 to 5: ";
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
 
             switch (mood) {
 
@@ -88,8 +102,15 @@ int main() {
             cout << "2. " << song2 << endl;
             cout << "3. " << song3 << endl;
 
-            cout << "Pick a song (1-3): ";
-            cin >> pick;
+            cout << "Pick a song to add to your queue (1-3): ";
+
+            while (!(cin >> pick) ||
+                   pick < 1 || pick > 3) {
+
+                cout << "Invalid. Please enter 1 to 3: ";
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
 
             if (pick == 1) {
                 chosen = song1;
@@ -102,12 +123,27 @@ int main() {
             }
 
             if (queueSize < MAX_QUEUE) {
+
                 queueList[queueSize] = chosen;
                 queueSize++;
 
                 cout << endl;
-                cout << "\"" << chosen
-                     << "\" was added to the queue." << endl;
+                cout << "Successful! \""
+                     << chosen
+                     << "\" was added to the queue."
+                     << endl;
+
+                cout << "Position in queue: "
+                     << queueSize << endl;
+            }
+
+            else {
+
+                cout << endl;
+                cout << "Queue is full ("
+                     << MAX_QUEUE
+                     << " songs). Play some songs first."
+                     << endl;
             }
 
             break;
@@ -120,22 +156,33 @@ int main() {
             while (inQueue) {
 
                 cout << endl;
-                cout << "===== YOUR QUEUE =====" << endl;
+                cout << "===== YOUR QUEUE ("
+                     << queueSize << "/"
+                     << MAX_QUEUE
+                     << ") =====" << endl;
 
                 if (queueSize == 0) {
 
-                    cout << "The queue is empty." << endl;
+                    cout << "The queue is empty. "
+                         << "Add songs from option 1."
+                         << endl;
+
                     inQueue = false;
                 }
 
                 else {
 
                     cout << "Next up: "
-                         << queueList[0] << endl;
+                         << queueList[0]
+                         << endl;
 
-                    for (int i = 1; i < queueSize; i++) {
+                    for (int i = 1;
+                         i < queueSize;
+                         i++) {
+
                         cout << i + 1 << ". "
-                             << queueList[i] << endl;
+                             << queueList[i]
+                             << endl;
                     }
 
                     cout << endl;
@@ -143,13 +190,21 @@ int main() {
                     cout << "2. Clear queue" << endl;
                     cout << "3. Back to main menu" << endl;
                     cout << "Choose (1-3): ";
-                    cin >> action;
+
+                    while (!(cin >> action) ||
+                           action < 1 || action > 3) {
+
+                        cout << "Invalid. Please enter 1 to 3: ";
+                        cin.clear();
+                        cin.ignore(1000, '\n');
+                    }
 
                     if (action == 1) {
 
                         cout << endl;
                         cout << "Now playing: "
-                             << queueList[0] << endl;
+                             << queueList[0]
+                             << endl;
 
                         // FIFO
                         for (int i = 0;
@@ -168,7 +223,8 @@ int main() {
                         queueSize = 0;
 
                         cout << endl;
-                        cout << "Queue cleared." << endl;
+                        cout << "Queue cleared."
+                             << endl;
                     }
 
                     else {
@@ -191,8 +247,16 @@ int main() {
             string planName;
 
             cout << endl;
-            cout << "Are you a student? 1 = Yes, 2 = No: ";
-            cin >> student;
+            cout << "Are you a student? "
+                 << "1 = Yes, 2 = No: ";
+
+            while (!(cin >> student) ||
+                   student < 1 || student > 2) {
+
+                cout << "Invalid. Please enter 1 or 2: ";
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
 
             if (student == 1) {
 
@@ -213,7 +277,8 @@ int main() {
             cout << "Price : RM 0.00" << endl;
             cout << "- Contains ads between songs" << endl;
             cout << "- No offline listening" << endl;
-            cout << "- Limited skips" << endl;
+            cout << "- Limited skips and shuffle-only on some playlists"
+                 << endl;
 
             cout << endl;
             cout << "===== " << planName
@@ -223,44 +288,72 @@ int main() {
 
                 cout << "Student price : RM "
                      << monthly
-                     << " per month" << endl;
+                     << " per month"
+                     << endl;
 
                 cout << "(50% off the normal price of RM "
-                     << premiumPrice << ")" << endl;
+                     << premiumPrice
+                     << ")"
+                     << endl;
             }
 
             else {
 
                 cout << "Price : RM "
                      << monthly
-                     << " per month" << endl;
+                     << " per month"
+                     << endl;
             }
 
             cout << "Benefits:" << endl;
-            cout << "- No ads" << endl;
-            cout << "- Download songs and listen offline" << endl;
-            cout << "- Unlimited skips" << endl;
-            cout << "- Higher audio quality" << endl;
+            cout << "- No ads, music plays non-stop"
+                 << endl;
+            cout << "- Download songs and listen offline"
+                 << endl;
+            cout << "- Unlimited skips and play any song you want"
+                 << endl;
+            cout << "- Higher audio quality"
+                 << endl;
 
             cout << endl;
-            cout << "Do you want to subscribe? "
-                 << "1 = Yes, 2 = No: ";
-            cin >> subscribe;
+            cout << "Do you want to subscribe to "
+                 << planName
+                 << "? 1 = Yes, 2 = No: ";
+
+            while (!(cin >> subscribe) ||
+                   subscribe < 1 || subscribe > 2) {
+
+                cout << "Invalid. Please enter 1 or 2: ";
+                cin.clear();
+                cin.ignore(1000, '\n');
+            }
 
             if (subscribe == 1) {
 
                 cout << endl;
-                cout << "Subscription successful!" << endl;
-                cout << "Plan: " << planName << endl;
-                cout << "Payment: RM "
+                cout << "Subscription successful!"
+                     << endl;
+
+                cout << "Plan    : "
+                     << planName
+                     << endl;
+
+                cout << "Payment : RM "
                      << monthly
-                     << " per month." << endl;
+                     << " will be charged every month."
+                     << endl;
+
+                cout << "Enjoy ad-free music and offline listening!"
+                     << endl;
             }
 
             else {
 
                 cout << endl;
-                cout << "You will stay on the Free plan."
+                cout << "No problem. You will stay on the Free plan."
+                     << endl;
+
+                cout << "You can subscribe anytime from the main menu."
                      << endl;
             }
 
@@ -269,15 +362,12 @@ int main() {
 
         case 4:
 
-            cout << "Goodbye! Enjoy your music." << endl;
+            cout << "Goodbye! Enjoy your music."
+                 << endl;
+
             running = false;
 
             break;
-
-        default:
-
-            cout << "Invalid choice. Please choose 1 to 4."
-                 << endl;
         }
     }
 
